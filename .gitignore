@@ -1,0 +1,10 @@
+# Requerimientos y tarea
+REQUERIMIENTOS.md
+TAREA.md
+
+# Entorno virtual
+venv/
+
+# Configuración / archivos locales
+.atl/
+.env
