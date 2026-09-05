@@ -6,7 +6,7 @@
 
 ## 1. Introducción
 
-Este informe documenta el desarrollo de una solución completa de análisis de datos financieros utilizando módulos y paquetes de `Python`. El proyecto integra técnicas de manipulación de datos, `Machine Learning`, `Procesamiento de Lenguaje Natural (NLP)` y `Deep Learning` para predecir tendencias del mercado financiero.
+Este informe documenta el desarrollo de una solución completa de análisis de datos financieros utilizando módulos y paquetes de `Python`. El proyecto integra técnicas de manipulación de datos, `Machine Learning`, `Procesamiento de Lenguaje Natural (NLP)` y `Deep Learning` para predecir tendencias del mercado financiero. Se trabajó con dos datasets: un dataset global de múltiples países y un dataset específico de Perú con 200+ indicadores económicos.
 
 ---
 
@@ -24,13 +24,16 @@ Una empresa de análisis de datos financieros necesita optimizar sus prediccione
 
 ## 3. Dataset utilizado
 
+### Dataset principal: datos globales
+
 **Fuente:** `data/data.csv` (datos económicos del Banco Mundial)
 
 **Características:**
 - **Registros:** 10,512 filas
-- **Columnas:** 25 variables
+- **Columnas:** 26 variables
 - **Período:** 1970–2019 (varía por país)
 - **Países:** Múltiples economías del mundo
+- **Formato:** Ancho (cada indicador = una columna)
 
 **Variables principales:**
 | Variable | Descripción |
@@ -43,6 +46,37 @@ Una empresa de análisis de datos financieros necesita optimizar sus prediccione
 | Gross Domestic Product (GDP) | Producto Interno Bruto |
 | Exports/Imports | Exportaciones e importaciones |
 | Manufacturing | Valor agregado manufacturero |
+
+### Dataset secundario: Perú
+
+**Fuente:** `data/data_peru.csv` (datos económicos del Banco Mundial — Perú)
+
+**Características:**
+- **Registros:** 13,383 filas
+- **Columnas:** 6 variables (Country Name, Country ISO3, Year, Indicator Name, Indicator Code, Value)
+- **Período:** 1960–2025
+- **Indicadores:** 200+ indicadores económicos
+- **Formato:** Largo (cada fila = un indicador en un año)
+
+**Indicadores clave utilizados:**
+| Indicador | Descripción |
+|---|---|
+| GDP (current US$) | Producto Interno Bruto |
+| GDP growth (annual %) | Crecimiento del PIB anual |
+| GDP per capita (current US$) | PIB per cápita |
+| Inflation, consumer prices (annual %) | Inflación (IPC) |
+| Exports/Imports of goods and services | Balanza comercial |
+| Trade (% of GDP) | Comercio como % del PIB |
+| Manufacturing (% of GDP) | Manufactura como % del PIB |
+| Services (% of GDP) | Servicios como % del PIB |
+| Agriculture (% of GDP) | Agricultura como % del PIB |
+
+### Integración de datasets
+
+Ambos datasets se combinan para el entrenamiento del modelo de clasificación:
+- Se mapean indicadores compatibles entre ambos formatos (GDP, exportaciones, importaciones, manufactura).
+- Se unen como un solo dataset con una columna `Fuente` (Global/Perú).
+- El modelo se entrena con todos los datos juntos.
 
 ---
 
@@ -129,7 +163,7 @@ Se implementó una red neuronal feedforward en PyTorch con:
 
 ## 8. Procesamiento de Lenguaje Natural (NLP)
 
-Dado que el dataset no contiene información textual, se utilizaron reportes financieros de ejemplo para demostrar las técnicas de NLP.
+Dado que el dataset contiene datos numéricos, los reportes financieros se almacenan en un archivo de texto separado (`data/reportes.txt`) y se leen dinámicamente durante la ejecución.
 
 ### 8.1 Técnicas aplicadas
 - **Limpieza:** conversión a minúsculas, eliminación de puntuación.
@@ -198,7 +232,9 @@ Dado que el dataset no contiene información textual, se utilizaron reportes fin
 
 ## 12. Visualizaciones
 
-Se generaron 10 visualizaciones en alta resolución (150 DPI):
+Se generaron 14 visualizaciones en alta resolución (150 DPI), organizadas en dos carpetas:
+
+### Análisis global (`output/global/`)
 
 | # | Archivo | Descripción |
 |---|---|---|
@@ -212,6 +248,15 @@ Se generaron 10 visualizaciones en alta resolución (150 DPI):
 | 8 | `lstm_entrenamiento.png` | Curvas de pérdida LSTM |
 | 9 | `lstm_predicciones.png` | Valores reales vs predichos LSTM |
 | 10 | `dl_entrenamiento.png` | Curvas de pérdida Deep Learning |
+
+### Análisis de Perú (`output/peru/`)
+
+| # | Archivo | Descripción |
+|---|---|---|
+| 11 | `peru_evolucion.png` | GDP, crecimiento, inflación y balanza comercial de Perú |
+| 12 | `peru_histogramas.png` | Distribución de indicadores clave de Perú |
+| 13 | `peru_dispersion.png` | Relación GDP vs exportaciones, GDP per cápita vs inflación |
+| 14 | `peru_estructura.png` | Evolución temporal + pastel de agricultura/manufactura/servicios |
 
 ---
 
@@ -252,23 +297,31 @@ Se generaron 10 visualizaciones en alta resolución (150 DPI):
 ## 15. Archivos del proyecto
 
 ```
-Entregable-01/
+Python-ML-Empresarial/
 ├── data/
-│   └── data.csv              # Dataset financiero
-├── output/                   # Visualizaciones generadas
-│   ├── tendencias.png
-│   ├── histogramas.png
-│   ├── dispersion.png
-│   ├── lineas_tendencia.png
-│   ├── matriz_confusion_rf.png
-│   ├── importancia_features.png
-│   ├── sentimiento.png
-│   ├── lstm_entrenamiento.png
-│   ├── lstm_predicciones.png
-│   └── dl_entrenamiento.png
+│   ├── data.csv              # Dataset global (múltiples países)
+│   ├── data_peru.csv         # Dataset de Perú (200+ indicadores)
+│   └── reportes.txt          # Reportes financieros para NLP
+├── output/
+│   ├── global/               # Visualizaciones del análisis global
+│   │   ├── tendencias.png
+│   │   ├── histogramas.png
+│   │   ├── dispersion.png
+│   │   ├── lineas_tendencia.png
+│   │   ├── matriz_confusion_rf.png
+│   │   ├── importancia_features.png
+│   │   ├── sentimiento.png
+│   │   ├── lstm_entrenamiento.png
+│   │   ├── lstm_predicciones.png
+│   │   └── dl_entrenamiento.png
+│   └── peru/                 # Visualizaciones del análisis de Perú
+│       ├── peru_evolucion.png
+│       ├── peru_histogramas.png
+│       ├── peru_dispersion.png
+│       └── peru_estructura.png
 ├── main.py                   # Script principal
 ├── requirements.txt          # Dependencias
-├── README.md                 # Este archivo
+├── README.md                 # Informe técnico (este archivo)
 ├── REQUERIMIENTOS.md         # Requerimientos del proyecto
 └── TAREA.md                  # Instrucciones de la tarea
 ```
@@ -309,7 +362,7 @@ Esto instala: Pandas, NumPy, Scikit-learn, PyTorch, SciPy, NLTK, TensorFlow, Ker
 python main.py
 ```
 
-El script ejecutará todo el pipeline: lectura de datos, análisis exploratorio, modelos de ML/DL, NLP, y generará 10 gráficos en la carpeta `output/`.
+El script ejecutará todo el pipeline: lectura de datos (2 CSVs), análisis exploratorio (global + Perú), modelos de ML/DL, NLP, y generará 14 gráficos en las carpetas `output/global/` y `output/peru/`.
 
 ### Paso 4: Desactivar el entorno virtual (opcional)
 

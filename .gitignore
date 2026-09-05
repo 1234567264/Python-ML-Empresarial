@@ -8,3 +8,5 @@ venv/
 # Configuración / archivos locales
 .atl/
 .env
+
+__pycache__
