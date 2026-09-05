@@ -675,7 +675,7 @@ for i, report in enumerate(cleaned_reports[:3]):
 # --- 5.3 Eliminación de stop words ---
 print("\n--- Eliminación de stop words ---")
 try:
-    stop_words = set(stopwords.words("english"))
+    stop_words = set(stopwords.words("spanish"))
 except LookupError:
     stop_words = set()
 
@@ -762,11 +762,12 @@ print("7. TOKENIZACIÓN (NLTK)")
 print("=" * 70)
 
 demo_text = (
-    "Financial markets experienced significant volatility amid concerns "
-    "about inflation, interest rates, and geopolitical developments. "
-    "The S&P 500 closed 2.3% lower, while the Nasdaq dropped 3.1%. "
-    "Investors are closely watching Federal Reserve announcements for "
-    "guidance on future monetary policy direction."
+    "Los mercados financieros experimentaron una volatilidad significativa "
+    "ante las preocupaciones por la inflación, las tasas de interés y el "
+    "desarrollo de tensiones geopolíticas. El índice S&P 500 cerró con una "
+    "baja del 2,3%, mientras que el Nasdaq cayó un 3,1%. Los inversores "
+    "siguen de cerca los anuncios del Banco Central para obtener "
+    "orientación sobre la dirección futura de la política monetaria."
 )
 
 print(f"\n--- Texto de demostración ---")
