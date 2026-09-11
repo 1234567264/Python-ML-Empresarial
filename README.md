@@ -369,6 +369,14 @@ flowchart TD
 - Python 3.10 o superior
 - pip (se instala con Python)
 
+```bash
+# Clonar repositorio 
+git clone https://github.com/1234567264/Python-ML-Empresarial.git
+
+# Entrar al proyecto 
+cd Python-ML-Empresarial
+```
+
 ### Paso 1: Crear entorno virtual
 
 ```bash
